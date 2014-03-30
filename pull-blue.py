@@ -33,11 +33,11 @@ broker = "localhost"
 port = 1883
 mqttc.connect(broker, port, 60)
 
-msg = "0"
+msg = "blue"
 
 # remain connected and publish
 while mqttc.loop() == 0:
-  mqttc.publish("vote", msg, 0, False) #qos=0, retain=n
+  mqttc.publish("vote", "!" + msg + "~", 0, False) #qos=0, retain=n
   print "published: %s" % msg
   time.sleep(random.uniform(0.1, 1))
   pass
