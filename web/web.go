@@ -15,9 +15,7 @@ func logRequests(app http.Handler) http.Handler {
 	})
 }
 
-func vote(client *MQTT.MqttClient, color string) http.Handler {
-	topic := "vote"
-	message := fmt.Sprintf("!%s~", color)
+func publish(client *MQTT.MqttClient, topic, message string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		receipt := client.Publish(MQTT.QOS_ZERO, topic, message)
 		<-receipt
@@ -39,8 +37,9 @@ func main() {
 	}
 
 	http.Handle("/", logRequests(http.FileServer(http.Dir("static"))))
-	http.Handle("/vote/red", logRequests(vote(client, "red")))
-	http.Handle("/vote/blue", logRequests(vote(client, "blue")))
+	http.Handle("/vote/red", logRequests(publish(client, "vote", "!red~")))
+	http.Handle("/vote/blue", logRequests(publish(client, "vote", "!blue~")))
+	http.Handle("/reset", logRequests(publish(client, "reset", "1")))
 
 	log.Println("Starting Server on :8080")
 	err = http.ListenAndServe(":8080", nil)

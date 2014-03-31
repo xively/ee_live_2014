@@ -1,8 +1,40 @@
-<script>
-  function vote(color) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('get', '/vote/' + color);
-    xhr.send(null);
-  }
-</script>
-<button name="red" onclick="vote('red')">Red</button><button name="blue" onclick="vote('blue')">Blue</button>
+<!doctype html>
+<html>
+  <head>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <script>
+      function ajax(path) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('get', path);
+        xhr.send(null);
+      }
+    </script>
+  </head>
+
+  <body>
+    <br />
+    <br />
+    <div class="row">
+      <div class="text-center">
+        <button name="red" onclick="ajax('/vote/red')" class="btn btn-default btn-lg">Red</button>
+        <button name="blue" onclick="ajax('/vote/blue')" class="btn btn-default btn-lg">Blue</button>
+      </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+      <div class="text-center">
+        <button name="reset" onclick="ajax('/reset')" class="btn btn-default btn-lg">Reset</button>
+      </div>
+    </div>
+  </body>
+</html>
