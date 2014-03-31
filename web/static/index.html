@@ -1,0 +1,8 @@
+<script>
+  function vote(color) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/vote/' + color);
+    xhr.send(null);
+  }
+</script>
+<button name="red" onclick="vote('red')">Red</button><button name="blue" onclick="vote('blue')">Blue</button>
