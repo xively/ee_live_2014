@@ -37,8 +37,8 @@ func main() {
 	}
 
 	http.Handle("/", logRequests(http.FileServer(http.Dir("static"))))
-	http.Handle("/vote/red", logRequests(publish(client, "vote", "!red~")))
-	http.Handle("/vote/blue", logRequests(publish(client, "vote", "!blue~")))
+	http.Handle("/vote/red", logRequests(publish(client, "vote", "r")))
+	http.Handle("/vote/blue", logRequests(publish(client, "vote", "b")))
 	http.Handle("/reset", logRequests(publish(client, "reset", "1")))
 
 	log.Println("Starting Server on :8080")
