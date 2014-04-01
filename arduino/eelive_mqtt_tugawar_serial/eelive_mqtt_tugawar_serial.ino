@@ -45,36 +45,11 @@ void setup()
 }
 
 void loop(){
-    while (impSerial.available() > 0){
-
-            inChar = impSerial.read(); // Read a character
-            inData[index] = inChar; // Store it
-            index++; // Increment where to write next
-            inData[index] = '\0'; // Null terminate the string  
-            //Serial.print(inChar);
-            newdata = true;
+    if (impSerial.available() > 0){
+      inChar = impSerial.read()
+      Serial.println(inChar);
+      parseVote(inChar);
     }
-    
-    index = 0;
-    
-  
-    if(newdata){ 
-      //Serial.println("new data");
-       if(inData[0] == '!'){
-           int i = 1;
-          while(inData[i] != '~'){
-             input.concat(inData[i]);
-             i++;
-          } 
-       }
-       Serial.println(input);
-       parseVote(input);
-       
-       newdata = false;
-       input = "";
-    }
-
-//end loop
 }
 
 // custom wipe to Fill the dots progressively along the strip.
@@ -92,29 +67,31 @@ void colorWipe(uint32_t c, uint8_t wait, int fills, int fille) {
   
 }
 
-void parseVote(String vote){
+void parseVote(char vote){
     //Serial.println("parsing a vote");
-    if(vote.equals("red")){
-      if(redTotal < 100){
-        redTotal = redTotal + 1;
-        blueTotal = blueTotal - 1;
-      }else{
-         redTotal = 100;
-      }
-    }
-    if(vote.equals("blue")){
-       if(blueTotal < 100){
-         blueTotal = blueTotal + 1;
-         redTotal = redTotal - 1;
-       }else{
-         blueTotal = 100;
-       }
+    switch (vote) {
+      case \r:
+        if (redTotal < 100) {
+          redTotal = redTotal + 1;
+          blueTotal = blueTotal - 1;
+        } else {
+           redTotal = 100;
+        }
+        break;
+      case \b:
+        if(blueTotal < 100) {
+          blueTotal = blueTotal + 1;
+          redTotal = redTotal - 1;
+        } else {
+          blueTotal = 100;
+        }
+        break;
     }
     Serial.print("Red=");
     Serial.println(redTotal);
     Serial.print("Blue=");
     Serial.println(blueTotal);
-    
+
     colorWipe(strip.Color(  255, 0, 0), lwait, 0, redTotal);
     colorWipe(strip.Color(  0, 0, 255), lwait, (100-blueTotal), 100);
   
